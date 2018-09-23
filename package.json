@@ -1,0 +1,22 @@
+{
+  "name": "performance-timer",
+  "version": "0.0.1",
+  "description": "Performance Timer",
+  "author": "Nathan Simonis",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.10.3",
+    "mocha": "^5.2.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "performance",
+    "timer"
+  ],
+  "license": "ISC",
+  "main": "./index.js",
+  "types": "./src/index.ts"
+}

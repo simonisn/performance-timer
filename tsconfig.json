@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+      "target": "es5",
+      "lib": [
+        "es6"           
+      ],
+      "module": "commonjs",
+      "moduleResolution": "node",
+      "outDir": "./",
+      "rootDir": "./src",
+      "baseUrl": "./",
+    },  
+    "exclude": [
+      "./node_modules"  
+    ]
+  }
+  
