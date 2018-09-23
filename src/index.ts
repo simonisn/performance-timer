@@ -37,12 +37,12 @@ class PerformanceLocator {
          *          'window', or 'document' variables.
          */        
         
-        if (global && global.process) {             
+        if (typeof global !== 'undefined' && typeof global.process !== 'undefined') {             
 
             // Get 'performance' from Node.js 'global' object
             performance = require('perf_hooks').performance;
 
-        } else if (window && window.document) {
+        } else if (typeof window !== 'undefined' && typeof window.document !== 'undefined') {
             if(window.performance) {      
         
                 // Get 'performance' from the browser's 'window' object
@@ -72,50 +72,27 @@ interface IGetTimestamp {
  * and Performance (High Precision Time Source and Browser/Node.js Peformance measurements).
  */
 class TimeSource {    
-    private static _timeSource: IGetTimestamp
-
-    public static get timeSource(): IGetTimestamp {
-        return TimeSource._timeSource;
-    }
-
-    public static initialize():void {        
-        TimeSource._timeSource = TimeSource.getTimeSource();
-    }    
-
-    /**
-     * Get the Time Source used to get Timestamps
-     * @returns {IGetTimestamp} Returns a reference to the function used to get Timestamps.
-     */
-    private static getTimeSource(): IGetTimestamp {
-        var timeSource: IGetTimestamp;        
-
-        if (PerformanceLocator.performance && PerformanceLocator.performance.now) {
-            timeSource = PerformanceLocator.performance.now;
-        } else if (Date && Date.now) {
-            timeSource = Date.now;
-        } else if (Date && new Date().getTime) {
-            timeSource = (): number => {
-                return new Date().getTime();
-            }
-        } else {
-            throw new Error("PerformanceTimeSources.getTimeSource(): No Time Source available.");
-        }
-        
-        return timeSource;
-    }    
 
     /**
      * Get a Timestamp
      * @returns {number} Returns a timestamp as a number.
      */
     public static getTimestamp(): number {
-        var timeSource: IGetTimestamp = TimeSource.timeSource;
+        var timeStamp: number;
 
-        return timeSource && timeSource();
+        if (PerformanceLocator.performance && PerformanceLocator.performance.now) {
+            timeStamp = PerformanceLocator.performance.now();
+        } else if (Date && Date.now) {
+            timeStamp = Date.now();
+        } else if (Date && new Date().getTime) {
+            timeStamp = new Date().getTime();            
+        } else {
+            throw new Error("PerformanceTimeSources.getTimeSource(): No Time Source available.");
+        }
+
+        return timeStamp;
     }    
 }
-// Initialize the static data
-TimeSource.initialize();
 
 
 /**
@@ -158,8 +135,8 @@ export interface IPerformanceTimerCallback { (performanceTimer: PerformanceTimer
  * @summary Specifies Performance Timer states
  */
 export enum Status {    
-    started,
-    stopped
+    started = 'started',
+    stopped = 'stopped'
 }
 
 /**

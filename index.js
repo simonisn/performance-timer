@@ -25,11 +25,11 @@ var PerformanceLocator = /** @class */ (function () {
          *          since any execution context can create 'global', 'process',
          *          'window', or 'document' variables.
          */
-        if (global && global.process) {
+        if (typeof global !== 'undefined' && typeof global.process !== 'undefined') {
             // Get 'performance' from Node.js 'global' object
             performance = require('perf_hooks').performance;
         }
-        else if (window && window.document) {
+        else if (typeof window !== 'undefined' && typeof window.document !== 'undefined') {
             if (window.performance) {
                 // Get 'performance' from the browser's 'window' object
                 performance = window.performance;
@@ -49,50 +49,28 @@ PerformanceLocator.initialize();
 var TimeSource = /** @class */ (function () {
     function TimeSource() {
     }
-    Object.defineProperty(TimeSource, "timeSource", {
-        get: function () {
-            return TimeSource._timeSource;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    TimeSource.initialize = function () {
-        TimeSource._timeSource = TimeSource.getTimeSource();
-    };
-    /**
-     * Get the Time Source used to get Timestamps
-     * @returns {IGetTimestamp} Returns a reference to the function used to get Timestamps.
-     */
-    TimeSource.getTimeSource = function () {
-        var timeSource;
-        if (PerformanceLocator.performance && PerformanceLocator.performance.now) {
-            timeSource = PerformanceLocator.performance.now;
-        }
-        else if (Date && Date.now) {
-            timeSource = Date.now;
-        }
-        else if (Date && new Date().getTime) {
-            timeSource = function () {
-                return new Date().getTime();
-            };
-        }
-        else {
-            throw new Error("PerformanceTimeSources.getTimeSource(): No Time Source available.");
-        }
-        return timeSource;
-    };
     /**
      * Get a Timestamp
      * @returns {number} Returns a timestamp as a number.
      */
     TimeSource.getTimestamp = function () {
-        var timeSource = TimeSource.timeSource;
-        return timeSource && timeSource();
+        var timeStamp;
+        if (PerformanceLocator.performance && PerformanceLocator.performance.now) {
+            timeStamp = PerformanceLocator.performance.now();
+        }
+        else if (Date && Date.now) {
+            timeStamp = Date.now();
+        }
+        else if (Date && new Date().getTime) {
+            timeStamp = new Date().getTime();
+        }
+        else {
+            throw new Error("PerformanceTimeSources.getTimeSource(): No Time Source available.");
+        }
+        return timeStamp;
     };
     return TimeSource;
 }());
-// Initialize the static data
-TimeSource.initialize();
 /**
  * Class - PerformanceTimerExecutionEvent
  *
@@ -129,8 +107,8 @@ exports.Interval = Interval;
  */
 var Status;
 (function (Status) {
-    Status[Status["started"] = 0] = "started";
-    Status[Status["stopped"] = 1] = "stopped";
+    Status["started"] = "started";
+    Status["stopped"] = "stopped";
 })(Status = exports.Status || (exports.Status = {}));
 /**
  *  Class - PerformanceTimer
