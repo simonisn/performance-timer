@@ -1,5 +1,5 @@
 import { describe, it} from 'mocha';
-import assert = require('assert');
+import * as assert from 'assert';
 import { PerformanceTimer, Status, Interval } from './index';
 
 
@@ -104,7 +104,7 @@ describe('Restart Timer', function() {
     });
 
     describe('Post Run', function() {
-      it('executionEvents should contain 1 ExecutionEvent', function() {
+      it('executionEvents should contain 1 Interval', function() {
         assert.strictEqual(performanceTimer.intervals.length, 1);
       });
     });
@@ -120,7 +120,7 @@ describe('Restart Timer', function() {
     });
 
     describe('Post Run', function() {  
-      it('executionEvents should contain 2 ExecutionEvent', function() {
+      it('executionEvents should contain 2 Intervals', function() {
         assert.strictEqual(performanceTimer.intervals.length, 2);
       });  
     });

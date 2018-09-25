@@ -4,9 +4,9 @@
       "lib": [
         "es6"           
       ],
-      "module": "commonjs",
+      "module": "umd",
       "moduleResolution": "node",
-      "outDir": "./",
+      "outDir": "./build",
       "rootDir": "./src",
       "baseUrl": "./",
     },  
